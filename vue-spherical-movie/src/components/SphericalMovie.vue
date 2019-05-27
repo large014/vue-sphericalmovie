@@ -1,6 +1,7 @@
 <template>
   <div class="sphericalMovie">
-        <img alt="Vue logo" src="../assets/logo.png">
+      <canvas ref="canvas" :width="width" :height="height"></canvas>
+      <img alt="Vue logo" src="../assets/logo.png">
   </div>
 </template>
 
@@ -11,12 +12,19 @@ import SphericalMovie from '@/assets/js/SphericalMovie.js'
 
 export default {
   name: 'sphericalMovie',
-  // data() {
-  // },
+  data() {
+    return{
+      width:0,
+      height:0,
+    }
+  },
   created(){
   },
   mounted() {
+    window.addEventListener('resize', this.onResize)
+    this.onResize()
     let test =  new SphericalMovie();
+
   },
   props: {
     msg: String
@@ -24,6 +32,16 @@ export default {
   computed:{
   },
   methods: {
+    onResize() {
+      this.width = this.$el.clientWidth
+      this.height = this.$el.clientHeight
+      console.log('w = ' + this.width + ',h = ' + this.height);
+      console.log(this.$el);
+      
+      // this.camera.aspect = this.width / this.height
+      // this.camera.updateProjectionMatrix()
+      // this.renderer.setSize( this.width, this.height)
+    }
   }
 
 }
