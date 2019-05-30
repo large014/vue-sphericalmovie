@@ -2,16 +2,12 @@ import OrbitControls from './libs/OrbitControls'
 
 export default class SphericalMovie {
 
-    
+
     /**
     * @class SphericalMovie
     */
-    constructor() {
-        console.log('test');
-
-        this.scene = new THREE.Scene();
-        this.camera = new THREE.PerspectiveCamera();
-        this.container = new THREE.Object3D();
+    constructor( $canvas ) {
+        console.log('test = ' + $canvas);
         this.initialize();
     }
 
@@ -20,6 +16,15 @@ export default class SphericalMovie {
     */
     initialize() {
         console.log('initialize');
+
+        let width = window.innerWidth,
+            height = window.innerHeight;
+
+        this.scene = new THREE.Scene();
+        this.container = new THREE.Object3D();
+        // this.camera = new THREE.PerspectiveCamera();
+
+
         this.scene.add(this.container)
         //--- Mesh
         this.geometry = new THREE.SphereGeometry(5, 60, 40);
@@ -41,7 +46,27 @@ export default class SphericalMovie {
         this.material = new THREE.MeshBasicMaterial({ map: this.texture });
 
         this.sphere = new THREE.Mesh( this.geometry, this.material );
-        this.scene.add( this.sphere );
+        this.scene.add(this.sphere);
+
+        //--- camera
+        this.camera = new THREE.PerspectiveCamera(75, width / height, 1, 1000);
+        this.camera.position.set(0, 0, 0.1);
+        this.camera.lookAt(this.sphere.position);
+
+        //--- render
+        this.renderer = new THREE.WebGLRenderer({
+            canvas: this.$canvas,
+            alpha: true
+        })
+        this.renderer.setClearColor(0x000000, 0)
+
+        // this.renderer = new THREE.WebGLRenderer();
+        // this.renderer.setSize(width, height);
+        // this.renderer.setClearColor({ color: 0x000000 });
+        // this.renderer.render(scene, camera);
+        // document.getElementById('stage').appendChild(renderer.domElement);
+
+
 
     }
 
