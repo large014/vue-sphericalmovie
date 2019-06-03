@@ -19,6 +19,8 @@ export default class SphericalMovie {
 
         let width = window.innerWidth,
             height = window.innerHeight;
+        console.log('js w = ' + width);
+        console.log('js h = ' + height);
 
         this.scene = new THREE.Scene();
         this.container = new THREE.Object3D();
@@ -37,6 +39,7 @@ export default class SphericalMovie {
         this.video.autoplay = true;
         this.video.loop = true;
         this.video.src = "video/test.MP4";
+        this.video.play();
 
         //--- Texture
         this.texture = new THREE.VideoTexture(this.video);
@@ -60,14 +63,34 @@ export default class SphericalMovie {
         })
         this.renderer.setClearColor(0x000000, 0)
 
+        window.addEventListener('resize', this.onResize.bind(this), false);
+        //--- control
+        this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
         // this.renderer = new THREE.WebGLRenderer();
         // this.renderer.setSize(width, height);
         // this.renderer.setClearColor({ color: 0x000000 });
         // this.renderer.render(scene, camera);
         // document.getElementById('stage').appendChild(renderer.domElement);
-
-
-
     }
+
+    /**
+    * 描画処理
+    */
+    reder(){
+        this.requestId = requestAnimationFrame(this.render)
+        // this.sphere.rotation.y += 0.05 * Math.PI/180
+        this.renderer.render(this.scene, this.camera)
+        this.controls.update()
+    }
+
+    onResize() {
+        this.camera.aspect = this.width / this.height
+        this.camera.updateProjectionMatrix()
+        this.renderer.setSize(this.width, this.height)
+        console.log('resize');
+        
+    }
+
+    
 
 }

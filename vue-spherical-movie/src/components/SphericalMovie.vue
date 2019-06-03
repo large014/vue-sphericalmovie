@@ -1,7 +1,6 @@
 <template>
   <div class="sphericalMovie">
       <canvas ref="canvas" :width="width" :height="height"></canvas>
-      <img alt="Vue logo" src="../assets/logo.png">
   </div>
 </template>
 
@@ -32,11 +31,12 @@ export default {
   },
   methods: {
     onResize() {
-      this.width = this.$el.clientWidth
-      this.height = this.$el.clientHeight
-      console.log('w = ' + this.width + ',h = ' + this.height);
-      console.log(this.$el);
-      
+      // this.width = this.$el.clientWidth
+      // this.height = this.$el.clientHeight
+
+
+      // console.log('w = ' + this.width + ',h = ' + this.height);
+      // console.log(this.$el);
       // this.camera.aspect = this.width / this.height
       // this.camera.updateProjectionMatrix()
       // this.renderer.setSize( this.width, this.height)
@@ -50,6 +50,6 @@ export default {
 <style scoped>
   .sphericalMovie{
     width: 100%;
-    height: 100%;
+    height: 100vh;
   }
 </style>
