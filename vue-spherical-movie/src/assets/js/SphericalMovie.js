@@ -36,15 +36,8 @@ export default class SphericalMovie {
         //--- Movie
         this.video = document.getElementById('video');
         this.video.play();
-
-        // this.video = document.createElement('video');
-        // this.video.width = 640;
-        // this.video.height = 360;
-        // this.video.autoplay = true;
-        // this.video.loop = true;
-        // this.video.src = "video/test.MP4";
-        // this.video.load();
-        // this.video.play()
+        this.video.addEventListener("loadedmetadata", (e) => { console.log(e); });
+        this.video.addEventListener("loadeddata", () => {  console.log('video complete!');} );
 
         //--- Texture
         this.texture = new THREE.VideoTexture(this.video);
@@ -87,11 +80,7 @@ export default class SphericalMovie {
     * 描画処理
     */
     render(){
-        // window.requestAnimationFrame(this.render )
-        // this.requestId = requestAnimationFrame(() => { this.render() })
-        // this.requestId = requestAnimationFrame(this.render.bind(this))
         this.requestId = requestAnimationFrame(() => { this.render() } )
-        // this.sphere.rotation.y += 0.05 * Math.PI/180
         this.renderer.render(this.scene, this.camera)
         this.controls.update()
     }
@@ -101,7 +90,14 @@ export default class SphericalMovie {
         this.camera.updateProjectionMatrix()
         this.renderer.setSize(this.width, this.height)
         console.log('resize');
+    }
 
+    videoPlay() {
+        console.log('play');
+        this.video.pause();
+        setTimeout(() => {
+            this.video.play();
+        }, 500);
     }
 
 

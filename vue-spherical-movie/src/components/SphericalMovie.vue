@@ -1,6 +1,10 @@
 <template>
   <div class="sphericalMovie">
-      <video id="video" src="video/test.MP4" muted autoplay loop webkit-playsinline="" style="display:none"></video>
+      <!-- <video id="video" src="video/test2.mp4" muted autoplay loop webkit-playsinline="" style="display:none"></video> -->
+      <div class="loader">
+        <img :src="loadimgSrc" alt="" class="loadimg">
+      </div>
+      <video id="video" :src=moviePath muted autoplay loop playsinline style="display:none"></video>
       <canvas ref="canvas"></canvas>
   </div>
 </template>
@@ -14,8 +18,11 @@ export default {
   name: 'sphericalMovie',
   data() {
     return{
+      test : null,
       width:0,
       height:0,
+      moviePath:this.movieSrc,
+      // loadImgPath : this.loadimgSrc
     }
   },
   created(){
@@ -23,10 +30,13 @@ export default {
   mounted() {
     window.addEventListener('resize', this.onResize)
     this.onResize()
-    let test =  new SphericalMovie( this.$refs.canvas );
+    this.test =  new SphericalMovie( this.$refs.canvas );
+    console.log('movieData = ' + this.movieSrc);
   },
   props: {
-    msg: String
+    movieSrc : String,
+    loadimgSrc : String,
+    movieList: Array,
   },
   computed:{
   },
@@ -38,9 +48,15 @@ export default {
 
       console.log('w = ' + this.width + ',h = ' + this.height);
       // console.log(this.$el);
-      // this.camera.aspect = this.width / this.height
+      // this.c amera.aspect = this.width / this.height
       // this.camera.updateProjectionMatrix()
       // this.renderer.setSize( this.width, this.height)
+    },
+    next(){
+      console.log('next test');
+      // this.moviePath = "video/test1.mp4";
+      this.moviePath = this.movieList[2];
+      this.test.videoPlay();
     }
   }
 
@@ -48,12 +64,27 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
   .sphericalMovie{
     width: 100%;
     height: 100vh;
   }
-
+  .loader{
+    width: 100%;
+    height: 100%;
+    background-color: #FFF;
+    position: relative;
+    transition: opacity .3s ease;
+    &.hide{
+      opacity: 0;
+    }
+  }
+  .loadimg{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
   canvas{
     width: 100%;
     height: 100%;
