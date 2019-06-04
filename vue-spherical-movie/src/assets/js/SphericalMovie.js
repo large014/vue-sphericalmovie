@@ -8,6 +8,7 @@ export default class SphericalMovie {
     */
     constructor( $canvas ) {
         console.log('test = ' + $canvas);
+        this.$canvas = $canvas;
         this.initialize();
     }
 
@@ -33,26 +34,33 @@ export default class SphericalMovie {
         this.geometry.scale(- 1, 1, 1);
 
         //--- Movie
-        this.video = document.createElement('video');
-        this.video.width = 640;
-        this.video.height = 360;
-        this.video.autoplay = true;
-        this.video.loop = true;
-        this.video.src = "video/test.MP4";
+        this.video = document.getElementById('video');
         this.video.play();
+
+        // this.video = document.createElement('video');
+        // this.video.width = 640;
+        // this.video.height = 360;
+        // this.video.autoplay = true;
+        // this.video.loop = true;
+        // this.video.src = "video/test.MP4";
+        // this.video.load();
+        // this.video.play()
 
         //--- Texture
         this.texture = new THREE.VideoTexture(this.video);
         this.texture.minFilter = THREE.LinearFilter;
+        this.texture.magFilter = THREE.LinearFilter;
+        this.texture.format = THREE.RGBFormat;
 
         //--- Material
         this.material = new THREE.MeshBasicMaterial({ map: this.texture });
 
         this.sphere = new THREE.Mesh( this.geometry, this.material );
-        this.scene.add(this.sphere);
+        this.container.add(this.sphere);
 
         //--- camera
         this.camera = new THREE.PerspectiveCamera(75, width / height, 1, 1000);
+        // this.camera = new THREE.PerspectiveCamera();
         this.camera.position.set(0, 0, 0.1);
         this.camera.lookAt(this.sphere.position);
 
@@ -71,13 +79,18 @@ export default class SphericalMovie {
         // this.renderer.setClearColor({ color: 0x000000 });
         // this.renderer.render(scene, camera);
         // document.getElementById('stage').appendChild(renderer.domElement);
+
+        this.render();
     }
 
     /**
     * 描画処理
     */
-    reder(){
-        this.requestId = requestAnimationFrame(this.render)
+    render(){
+        // window.requestAnimationFrame(this.render )
+        // this.requestId = requestAnimationFrame(() => { this.render() })
+        // this.requestId = requestAnimationFrame(this.render.bind(this))
+        this.requestId = requestAnimationFrame(() => { this.render() } )
         // this.sphere.rotation.y += 0.05 * Math.PI/180
         this.renderer.render(this.scene, this.camera)
         this.controls.update()
@@ -88,9 +101,8 @@ export default class SphericalMovie {
         this.camera.updateProjectionMatrix()
         this.renderer.setSize(this.width, this.height)
         console.log('resize');
-        
+
     }
 
-    
 
 }

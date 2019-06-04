@@ -1,6 +1,7 @@
 <template>
   <div class="sphericalMovie">
-      <canvas ref="canvas" :width="width" :height="height"></canvas>
+      <video id="video" src="video/test.MP4" muted autoplay loop webkit-playsinline="" style="display:none"></video>
+      <canvas ref="canvas"></canvas>
   </div>
 </template>
 
@@ -35,7 +36,7 @@ export default {
       // this.height = this.$el.clientHeight
 
 
-      // console.log('w = ' + this.width + ',h = ' + this.height);
+      console.log('w = ' + this.width + ',h = ' + this.height);
       // console.log(this.$el);
       // this.camera.aspect = this.width / this.height
       // this.camera.updateProjectionMatrix()
@@ -51,5 +52,10 @@ export default {
   .sphericalMovie{
     width: 100%;
     height: 100vh;
+  }
+
+  canvas{
+    width: 100%;
+    height: 100%;
   }
 </style>
