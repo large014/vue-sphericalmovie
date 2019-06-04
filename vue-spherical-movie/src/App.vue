@@ -3,13 +3,13 @@
     <!-- <SphericalMovie :moviePath="video/test2.mp4"/> -->
     <SphericalMovie ref="movie" :movieSrc="'video/test2.mp4'" :movieList=movies :loadimgSrc="'loading/loading.gif'" />
     <div id="ui">
-      <a href="#" @click="next" id="navi-next">
+      <a href="#" id="navi-next" @click="next">
         <i class="material-icons">navigate_next</i>
       </a>
-      <a href="#" id="take-photo">
+      <a href="#" id="take-photo" @click="takepicture">
         <i class="material-icons">photo_camera</i>
       </a>
-      <a href="#" id="download-photo">
+      <a href="#" id="download-photo" ref="download" download="images/sample.png">
         <i class="material-icons">file_download</i>
       </a>
     </div>
@@ -38,6 +38,9 @@ export default {
   methods: {
     next() {
       this.$refs.movie.next()
+    },
+    takepicture(){
+      this.$refs.download.href = this.$refs.movie.takepicture();
     }
   }
 
