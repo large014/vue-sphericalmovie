@@ -5,12 +5,14 @@
       </div>
       <video id="video" ref="video" :src=moviePath muted autoplay loop playsinline style="display:none"></video>
       <canvas ref="canvas"></canvas>
+      <CaptureUI id="captureui"/>
   </div>
 </template>
 
 <script>
 
 import OrbitControls from '@/assets/js/libs/OrbitControls'
+import CaptureUI from '../components/CaptureUI'
 
 export default {
   name: 'sphericalMovie',
@@ -28,6 +30,9 @@ export default {
       spheres: [],
       currentMovieIndex: 0,
     }
+  },
+  components: {
+    CaptureUI
   },
   created(){
   },
@@ -124,12 +129,9 @@ export default {
     takepicture(){
         let resizedCanvas = document.createElement("canvas");
         let resizedContext = resizedCanvas.getContext("2d");
-        let w = this.width;
-        let h = this.height;
         resizedCanvas.width = this.width;
         resizedCanvas.height = this.height;
-        console.log('this.width = ' + this.height);
-        
+        // console.log('this.width = ' + this.height);
         // let aScene = document.querySelector("a-scene").components.screenshot.getCanvas("perspective");
         resizedContext.drawImage(this.$canvas, 0, 0, this.width, this.height);
         return resizedCanvas.toDataURL('image/png');
@@ -159,7 +161,7 @@ export default {
   }
   .loadimg{
     position: absolute;
-    top: 50%;
+    top: 47%;
     left: 50%;
     transform: translate(-50%, -50%);
   }
@@ -167,4 +169,12 @@ export default {
     width: 100%;
     height: 100%;
   }
+
+  #captureui{
+    position: absolute;
+    bottom: 0; left: 50%;
+    transform: translate(-50%, 0);
+    padding: 20px 20px;
+  }
+
 </style>
