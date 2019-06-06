@@ -1,11 +1,11 @@
 <template>
   <div class="sphericalMovie">
+      <CaptureUI id="captureui" ref="captureui" @ui-event="onClick($event)" />
       <div class="loader" :class="{hide:isloaded}">
         <img :src="loadimgSrc" alt="" class="loadimg">
       </div>
       <video id="video" ref="video" :src=moviePath muted autoplay loop playsinline style="display:none"></video>
       <canvas ref="canvas"></canvas>
-      <CaptureUI id="captureui"/>
   </div>
 </template>
 
@@ -82,8 +82,6 @@ export default {
     this.render()
     window.addEventListener('resize', this.onResize)
     this.onResize()
-
-
   },
   props: {
     loadimgSrc : String,
@@ -92,6 +90,9 @@ export default {
   computed: {
     $canvas() {
       return this.$refs.canvas
+    },
+    $ui(){
+      return this.$refs.captureui
     }
   },
   methods: {
@@ -109,8 +110,18 @@ export default {
       this.controls.update()
     },
 
+    onClick( uitype ){
+      switch ( uitype ) {
+        case 0 :
+                  this.$ui.setCaptureData( this.takepicture() );
+          break;
+        case 1 :
+                  this.$ui.deleteCaptureData();
+          break;
+      }
+    },
+
     next(){
-      console.log('next test');
       this.isloaded = false;
       this.video.pause();
 
@@ -129,11 +140,27 @@ export default {
     takepicture(){
         let resizedCanvas = document.createElement("canvas");
         let resizedContext = resizedCanvas.getContext("2d");
-        resizedCanvas.width = this.width;
-        resizedCanvas.height = this.height;
-        // console.log('this.width = ' + this.height);
-        // let aScene = document.querySelector("a-scene").components.screenshot.getCanvas("perspective");
-        resizedContext.drawImage(this.$canvas, 0, 0, this.width, this.height);
+        let scale = 1;
+        let dstWidth = 0;
+        let dstHeight = 0;
+        //--- カメラの画角でar側の縮小処理を変える
+        if (this.width > this.height) {
+            scale = 0.5;
+        } else {
+            //--- 縦長（スマホ）
+            scale = 0.72;
+            // dstWidth = this.width * scale;
+            // dstHeight = this.height * scale
+            // resizedCanvas.width = dstWidth;
+            // resizedCanvas.height = dstHeight;
+            // resizedContext.drawImage(this.$canvas, 0, 0, dstWidth, dstHeight);
+        }
+        dstWidth = this.width * scale;
+        dstHeight = this.height * scale
+        resizedCanvas.width = dstWidth;
+        resizedCanvas.height = dstHeight;
+        resizedContext.drawImage(this.$canvas, 0, 0, dstWidth, dstHeight);
+
         return resizedCanvas.toDataURL('image/png');
     }
   }
@@ -172,9 +199,9 @@ export default {
 
   #captureui{
     position: absolute;
-    bottom: 0; left: 50%;
+    bottom: 75px;
+    left: 50%;
     transform: translate(-50%, 0);
-    padding: 20px 20px;
   }
 
 </style>

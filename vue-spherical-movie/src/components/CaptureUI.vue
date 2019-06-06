@@ -1,14 +1,17 @@
 <template>
   <div class="CaptureUIWrapper">
-      <a href="#" id="take-photo" @click="onClick(0)">
-        <i class="material-icons">photo_camera</i>
-      </a>
-      <a href="#" id="download-photo" ref="download" download="images/sample.png" target="_blank">
-        <i class="material-icons">file_download</i>
-      </a>
-      <a href="#" id="delete-photo" @click="onClick(1)" >
-        <i class="material-icons">delete</i>
-      </a>
+      <img src="" alt="" ref="sampleimg" class="sampleimg" :class="{off:!isCaptureData}">
+      <div class="uiArea">
+        <a href="#" id="take-photo" @click="onClick(0)">
+          <i class="material-icons">photo_camera</i>
+        </a>
+        <a href="#" id="download-photo" ref="download" download="images/sample.png" target="_blank" :class="{off:!isCaptureData}">
+          <i class="material-icons">file_download</i>
+        </a>
+        <a href="#" id="delete-photo" :class="{off:!isCaptureData}" @click="onClick(1)" >
+          <i class="material-icons">delete</i>
+        </a>
+      </div>
   </div>
 </template>
 
@@ -20,6 +23,7 @@ export default {
   name: 'CaptureUI',
   data() {
     return{
+      isCaptureData:false
     }
   },
   created(){
@@ -32,11 +36,17 @@ export default {
   },
   methods: {
     onClick( type ){
-      console.log('type = ' + type);
-      // this.$emit('ui-event', )
+      this.$emit('ui-event', type );
     },
     setCaptureData(src){
       this.$refs.download.href = src;
+      this.$refs.sampleimg.src = src;
+      this.isCaptureData = true;
+    },
+    deleteCaptureData(){
+      this.isCaptureData = false;
+      this.$refs.download.href = "#";
+      this.$refs.sampleimg.src ="";
     }
   }
 }
@@ -44,8 +54,22 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.CaptureUIWrapper{
-    display: flex;
+
+.sampleimg{
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translate(-50%, 0%);
+  // z-index: 2;
+  background-color: #FFF;
+  padding: 8px;
+  &.off{
+    display: none;
+  }
+}
+
+.uiArea{
+  display: flex;
 }
 
 a{
@@ -58,6 +82,11 @@ a{
     margin: 10px 3px;
     border-radius: 50%;
     position: relative;
+
+    &.off{
+      pointer-events: none;
+      color: #cccccc;
+    }
 }
 
 .material-icons {

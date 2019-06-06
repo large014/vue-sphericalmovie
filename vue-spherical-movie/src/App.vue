@@ -1,53 +1,37 @@
 <template>
   <div id="app">
-    <!-- <SphericalMovie :moviePath="video/test2.mp4"/> -->
     <SphericalMovie ref="movie" :movieSrc="'video/test2.mp4'" :movieList=movies :loadimgSrc="'loading/loading.gif'" />
-    <!-- <CaptureUI id="captureui"/> -->
-    <!-- <div id="ui">
+    <div id="mockUI">
       <a href="#" id="navi-next" @click="next">
         <i class="material-icons">navigate_next</i>
       </a>
-      <a href="#" id="take-photo" @click="takepicture">
-        <i class="material-icons">photo_camera</i>
-      </a>
-      <a href="#" id="download-photo" ref="download" download="images/sample.png" target="_blank">
-        <i class="material-icons">file_download</i>
-      </a>
-    </div> -->
+    </div>
   </div>
 </template>
 
 <script>
 import SphericalMovie from './components/SphericalMovie'
-// import CaptureUI from './components/CaptureUI'
-
 
 export default {
   name: 'app',
   data() {
     return{
       movies : [
-          "video/test1.mp4",
           "video/test2.mp4",
+          "video/test1.mp4",
           "video/test3.mp4"
         ],
     }
   },
   components: {
-    SphericalMovie,
-    // CaptureUI
+    SphericalMovie
   },
 
   methods: {
     next() {
       this.$refs.movie.next()
-    },
-    takepicture(){
-      this.$refs.download.href = this.$refs.movie.takepicture();
     }
   }
-
-
 }
 </script>
 
@@ -58,23 +42,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
 }
-
-/* #captureui{
+#mockUI {
   position: absolute;
-  bottom: 0; left: 50%;
-  transform: translate(-50%, 0);
-  padding: 20px 20px;
-} */
-
-/* #ui {
-  position: absolute;
-  bottom: 0; left: 50%;
-  transform: translate(-50%, 0);
-  display: flex;
-  padding: 20px 20px;
-}
-button{
-  font-size: 70px;
+  top: 15px; left: 10px;
 }
 
 a{
@@ -110,7 +80,7 @@ i{
   top: 50%;
   left: 50%;
   transform: translate(-50%,-50%);
-} */
+}
 
 
 </style>
