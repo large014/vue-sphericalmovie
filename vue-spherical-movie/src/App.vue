@@ -18,8 +18,8 @@ export default {
     return{
       movies : [
           "video/test2.mp4",
-          "video/test1.mp4",
-          "video/test3.mp4"
+          "video/test3.mp4",
+          "video/test1.mp4"
         ],
     }
   },
