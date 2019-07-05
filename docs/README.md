@@ -1,5 +1,6 @@
 # vue-spherical-movie
-
+ブラウザで360度動画再生させながら、任意のタイミングでキャプチャするコンポーネント  
+[DEMO](https://large014.github.io/vue-sphericalmovie/)
 ## Project setup
 ```
 npm install
